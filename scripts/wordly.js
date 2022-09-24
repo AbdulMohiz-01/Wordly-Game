@@ -52,7 +52,7 @@ async function init() {
         loading = false;
         isLoading(false);
         if(!validWord){
-            markInvalidWord();
+            await markInvalidWord();
             return;
         }
         for(let i = 0; i < currentGuess.length; i++) {
@@ -87,7 +87,7 @@ async function init() {
             return;
         }
     }
-    const markInvalidWord = () => {
+    async function markInvalidWord(){
         for(let i = 0; i < currentGuess.length; i++) {
             letters[ANSWER_LENGHT * row + i].classList.add('invalid');
         }
