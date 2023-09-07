@@ -1,11 +1,11 @@
-let [letters, loading, brand, resultWrapper, showWordWrapper, sw] = [document.querySelectorAll('.letters'), document.querySelector('.loading'), document.querySelector('.brand'),document.querySelector('.result-wrapper'),document.querySelector('.show-word-wrapper'), document.querySelector('.show-word')];
+let [letters, loading, brand, resultWrapper, showWordWrapper, sw] = [document.querySelectorAll('.letters'), document.querySelector('.loading'), document.querySelector('.brand'), document.querySelector('.result-wrapper'), document.querySelector('.show-word-wrapper'), document.querySelector('.show-word')];
 
 const ANSWER_LENGHT = 5;
 const ROWS = 6;
 let done = false;
 let Word = '';
 
-for (let index = 0; index <letters.length; index++) {
+for (let index = 0; index < letters.length; index++) {
     letters[index].classList.add('letters-animation');
 }
 
@@ -39,7 +39,7 @@ async function init() {
 
 
     async function commit() {
-        if(currentGuess.length < ANSWER_LENGHT) {
+        if (currentGuess.length < ANSWER_LENGHT) {
             return;
         }
         loading = true;
@@ -51,16 +51,16 @@ async function init() {
         const { validWord } = await res.json();
         loading = false;
         isLoading(false);
-        if(!validWord){
+        if (!validWord) {
             await markInvalidWord();
             return;
         }
-        for(let i = 0; i < currentGuess.length; i++) {
-            if(currentGuess[i] === wordParts[i] && wordMaps[currentGuess[i]] > 0) {
+        for (let i = 0; i < currentGuess.length; i++) {
+            if (currentGuess[i] === wordParts[i] && wordMaps[currentGuess[i]] > 0) {
                 letters[ANSWER_LENGHT * row + i].classList.add('correct');
                 wordMaps[currentGuess[i]]--;
             }
-            else if(wordParts.includes(currentGuess[i]) && wordMaps[currentGuess[i]] > 0) {
+            else if (wordParts.includes(currentGuess[i]) && wordMaps[currentGuess[i]] > 0) {
                 letters[ANSWER_LENGHT * row + i].classList.add('close');
                 wordMaps[currentGuess[i]]--;
             }
@@ -70,7 +70,7 @@ async function init() {
         }
         if (currentGuess === word) {
             resultWrapper.classList.remove('result-wrapper-unvisible');
-            resultWrapper.classList.add('result-wrapper-animation','result-wrapper-win');
+            resultWrapper.classList.add('result-wrapper-animation', 'result-wrapper-win');
             document.querySelector('.result').innerText = "You Win!";
             done = true;
             return;
@@ -78,26 +78,26 @@ async function init() {
         currentGuess = '';
         row++;
         wordMaps = wordMap(wordParts);
-        if(row > ROWS - 1) {
+        if (row > ROWS - 1) {
             resultWrapper.classList.remove('result-wrapper-unvisible');
-            resultWrapper.classList.add('result-wrapper-animation','result-wrapper-lose');
+            resultWrapper.classList.add('result-wrapper-animation', 'result-wrapper-lose');
             document.querySelector('.result').innerText = "You Lose!";
             showWordWrapper.classList.add('show-word-wrapper-unvisible');
             done = true;
             return;
         }
     }
-    async function markInvalidWord(){
-        for(let i = 0; i < currentGuess.length; i++) {
+    async function markInvalidWord() {
+        for (let i = 0; i < currentGuess.length; i++) {
             letters[ANSWER_LENGHT * row + i].classList.add('invalid');
         }
 
         setTimeout(() => {
-            for(let i = 0; i < currentGuess.length; i++) {
+            for (let i = 0; i < currentGuess.length; i++) {
                 letters[ANSWER_LENGHT * row + i].classList.remove('invalid');
             }
         }
-        , 1000);
+            , 1000);
 
     }
     function backspace() {
@@ -107,15 +107,15 @@ async function init() {
         }
     }
     document.addEventListener('keydown', event => {
-        if(!done && !loading) {
+        if (!done && !loading) {
             let action = event.key;
-            if (action === 'Enter'){
+            if (action === 'Enter') {
                 commit();
             }
-            else if (action === 'Backspace'){
+            else if (action === 'Backspace') {
                 backspace();
             }
-            else if (isLetter(action)){
+            else if (isLetter(action)) {
                 addLetter(action.toUpperCase());
             }
             else {
@@ -135,7 +135,7 @@ const wordMap = array => {
 }
 const isLoading = load => loading.classList.toggle('hide-loading', !load);
 
-function showWord(){
+function showWord() {
     showWordWrapper.classList.add('sw-flip');
     sw.innerText = Word;
 }
